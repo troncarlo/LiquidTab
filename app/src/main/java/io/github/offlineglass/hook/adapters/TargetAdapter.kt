@@ -33,6 +33,7 @@ import io.github.offlineglass.hook.adapters.cainiao.CainiaoAdapter
 import io.github.offlineglass.hook.adapters.jd.JdAdapter
 import io.github.offlineglass.hook.adapters.qqmusic.QqMusicAdapter
 import io.github.offlineglass.hook.adapters.xjtu.XjtuAdapter
+import io.github.offlineglass.hook.adapters.telegram.TelegramAdapter
 import io.github.offlineglass.hook.NavigationCandidate
 import io.github.offlineglass.targets.TargetSpec
 import io.github.offlineglass.targets.TargetSpecRegistry
@@ -468,6 +469,7 @@ internal object TargetAdapterRegistry {
         XianyuAdapter,
         CainiaoAdapter,
         XjtuAdapter,
+        TelegramAdapter,
         io.github.offlineglass.hook.adapters.zhihu.ZhihuAdapter,
     ).associateBy(TargetAdapter::key)
 

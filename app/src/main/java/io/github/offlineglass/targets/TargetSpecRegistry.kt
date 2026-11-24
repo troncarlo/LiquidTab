@@ -36,6 +36,7 @@ internal object TargetSpecRegistry {
         io.github.offlineglass.hook.adapters.system_picker.targetSpec,
         io.github.offlineglass.hook.adapters.xjtu.targetSpec,
         io.github.offlineglass.hook.adapters.zhihu.targetSpec,
+        io.github.offlineglass.hook.adapters.telegram.targetSpec,
     )
     val byKey: Map<String, TargetSpec> by lazy(LazyThreadSafetyMode.PUBLICATION) {
         all.associateBy(TargetSpec::key)

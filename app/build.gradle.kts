@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "io.github.offlineglass"
-    compileSdk = 37
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "io.github.offlineglass"
         minSdk = 35
-        targetSdk = 37
+        targetSdk = 36
         versionCode = 217
         versionName = "2.0"
 
