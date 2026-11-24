@@ -32,12 +32,11 @@ internal object GooglePhoneAdapter : TargetAdapter {
         val drawable = view.drawable ?: return false
         if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) return false
 
-        // Evita che sfondi circolari o pillole colorate dell'item mascherino la sagoma dell'icona
         view.background = null
         view.backgroundTintList = ColorStateList.valueOf(Color.TRANSPARENT)
 
         val wrapped = DrawableCompat.wrap(drawable.mutate())
-        val tintColor = if (view.isSelected) config.accentColor else Color.WHITE
+        val tintColor = if (view.isSelected) targetSpec.glassAccentColor else Color.WHITE
         DrawableCompat.setTint(wrapped, tintColor)
         view.setImageDrawable(wrapped)
 
@@ -58,7 +57,6 @@ internal object GooglePhoneAdapter : TargetAdapter {
                     child.background = null
                     child.backgroundTintList = ColorStateList.valueOf(Color.TRANSPARENT)
                 } else if (child is ViewGroup) {
-                    // Rimuove eventuali sfondi circolari/attivi impostati sul contenitore dell'item
                     val className = child.javaClass.name
                     if (className.contains("Indicator", ignoreCase = true) ||
                         className.contains("Badge", ignoreCase = true)
