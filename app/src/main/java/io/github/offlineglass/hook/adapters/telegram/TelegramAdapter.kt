@@ -1,6 +1,7 @@
 package io.github.offlineglass.hook.adapters.telegram
 
 import android.text.TextUtils
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import de.robv.android.xposed.XposedBridge
@@ -14,9 +15,25 @@ internal object TelegramAdapter : TargetAdapter {
     override val usesContentDarkMode = true
     override val suppressPlatformElevation = true
 
+    private val blockedLabels = setOf(
+        "impostazioni",
+        "settings",
+        "impo",
+        "cat",
+    )
+
+    private fun isBlockedLabel(raw: String): Boolean {
+        val normalized = raw.trim().lowercase()
+        if (normalized.isEmpty()) return true
+        return normalized in blockedLabels
+    }
+
     override fun configureSourceText(view: TextView, config: GlassConfig, density: Float): Boolean {
         val label = view.text?.toString()?.trim().orEmpty()
-        if (label.isEmpty()) return false
+        if (isBlockedLabel(label)) {
+            view.visibility = View.GONE
+            return false
+        }
         view.maxLines = 1
         view.ellipsize = TextUtils.TruncateAt.END
         view.textSize = config.textSize
