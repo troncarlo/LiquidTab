@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "io.github.offlineglass"
-    compileSdk = 38
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "io.github.offlineglass"
