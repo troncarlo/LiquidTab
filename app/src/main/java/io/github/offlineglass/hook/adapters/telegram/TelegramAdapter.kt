@@ -20,6 +20,7 @@ internal object TelegramAdapter : TargetAdapter {
         "settings",
         "impo",
         "cat",
+        "prof",
     )
 
     private fun isBlockedLabel(raw: String): Boolean {
