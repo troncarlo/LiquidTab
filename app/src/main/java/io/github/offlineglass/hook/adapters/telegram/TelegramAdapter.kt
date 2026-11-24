@@ -20,18 +20,13 @@ internal object TelegramAdapter : TargetAdapter {
         "settings",
         "impo",
         "cat",
-        "prof",
     )
-
-    private fun isBlockedLabel(raw: String): Boolean {
-        val normalized = raw.trim().lowercase()
-        if (normalized.isEmpty()) return true
-        return normalized in blockedLabels
-    }
 
     override fun configureSourceText(view: TextView, config: GlassConfig, density: Float): Boolean {
         val label = view.text?.toString()?.trim().orEmpty()
-        if (isBlockedLabel(label)) {
+        val normalized = label.lowercase()
+        if (normalized.isEmpty()) return false
+        if (normalized in blockedLabels) {
             view.visibility = View.GONE
             return false
         }
