@@ -16,8 +16,10 @@ jobs:
           distribution: temurin
           java-version: "21"
 
-      - name: Accept Android SDK Licenses
-        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null 2>&1 || true
+      - name: Install Android SDK Platform 38 and Accept Licenses
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null 2>&1 || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-38"
 
       - name: Build Release APK
         run: chmod +x gradlew && ./gradlew :app:assembleRelease --console=plain
