@@ -1,6 +1,7 @@
 package io.github.offlineglass.hook.adapters.google_phone
 
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import de.robv.android.xposed.XposedBridge
@@ -13,22 +14,34 @@ internal object GooglePhoneAdapter : TargetAdapter {
     override val key = "google_phone"
     override val usesContentDarkMode = true
     override val suppressPlatformElevation = true
-
-    private const val LARGE_ICON_SCALE = 1.35f
+    override val sourceIconScale: Float = 1.35f
 
     override fun configureSourceText(view: TextView, config: GlassConfig, density: Float): Boolean {
         view.text = ""
         view.visibility = View.GONE
-        return false
+        return true
     }
 
     override fun configureSourceIcon(view: ImageView, config: GlassConfig, density: Float): Boolean {
         val drawable = view.drawable ?: return false
         if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) return false
         view.visibility = View.VISIBLE
-        view.scaleX = LARGE_ICON_SCALE
-        view.scaleY = LARGE_ICON_SCALE
         return true
+    }
+
+    override fun suppressNativeBottomChrome(navigation: ViewGroup) {
+        fun hideLabels(group: ViewGroup) {
+            for (i in 0 until group.childCount) {
+                val child = group.getChildAt(i)
+                if (child is TextView) {
+                    child.text = ""
+                    child.visibility = View.GONE
+                } else if (child is ViewGroup) {
+                    hideLabels(child)
+                }
+            }
+        }
+        hideLabels(navigation)
     }
 
     override fun onNavigationCandidates(candidates: List<NavigationCandidate>) {

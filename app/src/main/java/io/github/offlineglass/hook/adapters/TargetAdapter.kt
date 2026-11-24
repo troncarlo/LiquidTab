@@ -470,6 +470,7 @@ internal object TargetAdapterRegistry {
         CainiaoAdapter,
         XjtuAdapter,
         TelegramAdapter,
+        io.github.offlineglass.hook.adapters.google_phone.GooglePhoneAdapter,
         io.github.offlineglass.hook.adapters.zhihu.ZhihuAdapter,
     ).associateBy(TargetAdapter::key)
 
