@@ -1,6 +1,6 @@
 package io.github.offlineglass.hook.adapters.google_phone
 
-import android.text.TextUtils
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import de.robv.android.xposed.XposedBridge
@@ -14,21 +14,20 @@ internal object GooglePhoneAdapter : TargetAdapter {
     override val usesContentDarkMode = true
     override val suppressPlatformElevation = true
 
+    private const val LARGE_ICON_SCALE = 1.35f
+
     override fun configureSourceText(view: TextView, config: GlassConfig, density: Float): Boolean {
-        val label = view.text?.toString()?.trim().orEmpty()
-        if (label.isEmpty()) return false
-        view.maxLines = 1
-        view.ellipsize = TextUtils.TruncateAt.END
-        view.textSize = config.textSize
-        view.scaleX = 1f
-        view.scaleY = 1f
-        return true
+        view.text = ""
+        view.visibility = View.GONE
+        return false
     }
 
     override fun configureSourceIcon(view: ImageView, config: GlassConfig, density: Float): Boolean {
-        if (view.drawable == null) return false
-        view.scaleX = 1f
-        view.scaleY = 1f
+        val drawable = view.drawable ?: return false
+        if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) return false
+        view.visibility = View.VISIBLE
+        view.scaleX = LARGE_ICON_SCALE
+        view.scaleY = LARGE_ICON_SCALE
         return true
     }
 
