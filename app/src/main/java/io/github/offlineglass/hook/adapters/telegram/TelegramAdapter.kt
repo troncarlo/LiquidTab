@@ -1,5 +1,6 @@
 package io.github.offlineglass.hook.adapters.telegram
 
+import android.text.TextUtils
 import android.widget.ImageView
 import android.widget.TextView
 import de.robv.android.xposed.XposedBridge
@@ -14,6 +15,10 @@ internal object TelegramAdapter : TargetAdapter {
     override val suppressPlatformElevation = true
 
     override fun configureSourceText(view: TextView, config: GlassConfig, density: Float): Boolean {
+        val label = view.text?.toString()?.trim().orEmpty()
+        if (label.isEmpty()) return false
+        view.maxLines = 1
+        view.ellipsize = TextUtils.TruncateAt.END
         view.textSize = config.textSize
         view.scaleX = 1f
         view.scaleY = 1f
@@ -21,6 +26,7 @@ internal object TelegramAdapter : TargetAdapter {
     }
 
     override fun configureSourceIcon(view: ImageView, config: GlassConfig, density: Float): Boolean {
+        if (view.drawable == null) return false
         view.scaleX = 1f
         view.scaleY = 1f
         return true
@@ -28,8 +34,12 @@ internal object TelegramAdapter : TargetAdapter {
 
     override fun onNavigationCandidates(candidates: List<NavigationCandidate>) {
         if (candidates.isEmpty()) return
+        val filtered = candidates.filter { candidate ->
+            candidate.view.width > 0 && candidate.view.height > 0
+        }
+        if (filtered.isEmpty()) return
         XposedBridge.log(
-            "[OfflineGlass][TelegramDiag] candidates=${candidates.joinToString { candidate ->
+            "[OfflineGlass][TelegramDiag] candidates=${filtered.joinToString { candidate ->
                 "${candidate.view.javaClass.name}/" +
                     "${AdapterNavigationSearch.resourceEntryName(candidate.view) ?: "no-id"}/" +
                     "slots=${candidate.slotCount}/score=${candidate.score}/" +
